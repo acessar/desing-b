@@ -16,31 +16,56 @@
     
             body {
                 font-family: 'Inter', sans-serif;
-                background: linear-gradient(180deg, #ffcccc 0%, #ffe6e6 50%, #fff0f0 100%);
+                background: linear-gradient(180deg, #6B1D1D 0%, #E50914 50%, #FFF5F5 100%);
                 background-attachment: fixed;
                 color: #2a2a2a;
                 line-height: 1.6;
                 overflow-x: hidden;
                 min-height: 100vh;
+                position: relative;
+            }
+
+            body::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 1;
+            }
+
+            @keyframes gridGlow {
+                0%, 100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 1.2;
+                }
             }
 
             @keyframes heartbeat {
                 0%, 100% {
                     transform: scale(1);
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.25), 0 2px 8px rgba(0, 0, 0, 0.1);
                 }
                 25% {
                     transform: scale(1.02);
-                    box-shadow: 0 3px 12px rgba(229, 9, 20, 0.2);
+                    box-shadow: 0 6px 20px rgba(229, 9, 20, 0.3), 0 3px 10px rgba(0, 0, 0, 0.15);
                 }
                 50% {
                     transform: scale(1);
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.25), 0 2px 8px rgba(0, 0, 0, 0.1);
                 }
                 75% {
                     transform: scale(1.02);
-                    box-shadow: 0 3px 12px rgba(229, 9, 20, 0.2);
+                    box-shadow: 0 6px 20px rgba(229, 9, 20, 0.3), 0 3px 10px rgba(0, 0, 0, 0.15);
                 }
+            }
+
+            body::before {
+                animation: gridGlow 4s ease-in-out infinite;
             }
     
             /* Loader minimalista */
@@ -134,6 +159,7 @@
                 overflow: hidden;
                 min-height: 300px;
                 max-height: 450px;
+                z-index: 2;
             }
     
             .hero-content {
@@ -155,7 +181,7 @@
                 font-family: 'Playfair Display', serif;
                 font-size: 2rem;
                 font-weight: 500;
-                color: #fff;
+                color: #ffffff;
                 letter-spacing: 2px;
                 margin-bottom: 0.8rem;
                 animation: fadeInUp 0.8s ease-out 0.3s both;
@@ -165,7 +191,7 @@
             .hero-content p {
                 font-size: 1rem;
                 animation: fadeInUp 0.8s ease-out 0.5s both;
-                color: #f0f0f0;
+                color: #FFD4D4;
                 font-weight: 300;
                 letter-spacing: 0.5px;
                 text-align: center;
@@ -177,10 +203,10 @@
                 height: 180px;
                 border-radius: 50%;
                 overflow: hidden;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 4px 15px rgba(229, 9, 20, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1);
                 transition: all 0.3s ease;
                 animation: fadeInUp 0.8s ease-out;
-                border: 3px solid #f0f0f0;
+                border: 3px solid #E50914;
                 margin-bottom: 1rem;
                 background: #E50914;
                 display: flex;
@@ -210,6 +236,8 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                position: relative;
+                z-index: 2;
             }
     
             /* Header minimalista */
@@ -253,7 +281,7 @@
                 font-family: 'Playfair Display', serif;
                 font-size: 2.8rem;
                 font-weight: 500;
-                color: #fff;
+                color: #ffffff;
                 letter-spacing: 3px;
                 animation: fadeInUp 0.8s ease-out 0.2s both;
                 text-align: center;
@@ -261,7 +289,7 @@
     
             .tagline {
                 font-size: 1rem;
-                color: #666;
+                color: #FFD4D4;
                 margin-top: 0.8rem;
                 letter-spacing: 0.5px;
                 animation: fadeInUp 0.8s ease-out 0.3s both;
@@ -284,7 +312,7 @@
                 font-family: 'Playfair Display', serif;
                 font-size: 2rem;
                 font-weight: 500;
-                color: #fff;
+                color: #6B1D1D;
                 margin-bottom: 2rem;
                 letter-spacing: 1px;
                 position: relative;
@@ -296,9 +324,10 @@
                 content: '';
                 display: block;
                 width: 60px;
-                height: 1px;
-                background: #E50914;
+                height: 2px;
+                background: linear-gradient(90deg, transparent, #E50914, transparent);
                 margin: 1rem auto;
+                box-shadow: 0 0 8px rgba(229, 9, 20, 0.3);
             }
     
             /* Grid de Contato */
@@ -333,7 +362,7 @@
                 gap: 1rem;
                 padding: 1rem 2rem;
                 background: #E50914;
-                color: white;
+                color: #ffffff;
                 text-decoration: none;
                 border-radius: 6px;
                 font-size: 1rem;
@@ -342,7 +371,7 @@
                 transition: all 0.3s ease;
                 cursor: pointer;
                 border: none;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 4px 15px rgba(229, 9, 20, 0.25), 0 2px 8px rgba(0, 0, 0, 0.1);
                 width: 100%;
                 max-width: 300px;
                 height: 56px;
@@ -413,7 +442,7 @@
 
             .button-container p {
                 margin-top: 0.5rem;
-                color: #888;
+                color: #6B1D1D;
                 font-size: 0.85rem;
                 font-weight: 300;
                 text-align: center;
@@ -431,7 +460,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3), 0 2px 8px rgba(0, 0, 0, 0.15);
                 z-index: 1000;
                 cursor: pointer;
                 transition: all 0.3s ease;
@@ -440,7 +469,7 @@
     
             .floating-whatsapp:hover {
                 transform: scale(1.05);
-                box-shadow: 0 6px 20px rgba(229, 9, 20, 0.3);
+                box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2);
                 background: #B20710;
             }
     
@@ -540,7 +569,7 @@
     
             .close-button:hover {
                 background: #E50914;
-                color: white;
+                color: #ffffff;
                 transform: scale(1.05);
             }
     
@@ -552,7 +581,7 @@
     
             .form-group label {
                 display: block;
-                color: #333;
+                color: #6B1D1D;
                 font-size: 0.9rem;
                 margin-bottom: 0.5rem;
                 font-weight: 400;
@@ -577,7 +606,7 @@
             .form-group textarea:focus {
                 outline: none;
                 border-color: #E50914;
-                box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.1);
+                box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2), inset 0 0 10px rgba(229, 9, 20, 0.1);
             }
     
             .form-group textarea {
@@ -589,7 +618,7 @@
                 width: 100%;
                 padding: 1rem;
                 background: #E50914;
-                color: white;
+                color: #ffffff;
                 border: none;
                 border-radius: 4px;
                 font-size: 1rem;
@@ -600,6 +629,7 @@
                 position: relative;
                 overflow: hidden;
                 animation: heartbeat 2.5s ease-in-out infinite;
+                box-shadow: 0 4px 12px rgba(229, 9, 20, 0.2);
             }
     
             .submit-button::before {
@@ -686,11 +716,14 @@
             /* Footer minimalista */
             footer {
                 background: #E50914;
-                color: white;
+                color: #ffffff;
                 padding: 2rem 0 1rem;
                 text-align: center;
                 margin-top: 2rem;
                 width: 100%;
+                position: relative;
+                z-index: 2;
+                box-shadow: 0 -4px 15px rgba(229, 9, 20, 0.2);
             }
     
             .footer-content {
@@ -700,10 +733,10 @@
             }
     
             .footer-bottom {
-                border-top: 1px solid #B20710;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
                 padding-top: 1rem;
                 font-size: 0.85rem;
-                color: #fff;
+                color: rgba(255, 255, 255, 0.8);
                 font-weight: 300;
                 text-align: center;
             }
