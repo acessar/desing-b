@@ -81,7 +81,9 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: #ffffff;
+    background: linear-gradient(180deg, rgba(84, 0, 31, 1) 0%, rgba(122, 0, 46, 1) 50%, rgba(255, 245, 245, 1) 100%);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -90,12 +92,17 @@ body::before {
 }
 
 .loader {
-    width: 40px;
-    height: 40px;
-    border: 2px solid #f0f0f0;
-    border-top: 2px solid #2a2a2a;
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(122, 0, 46, 0.2);
+    border-top: 3px solid #7A002E;
+    border-right: 3px solid #8A0038;
     border-radius: 50%;
     animation: spin 1s linear infinite;
+    box-shadow: 0 0 25px rgba(122, 0, 46, 0.5),
+                0 0 50px rgba(212, 175, 55, 0.2),
+                inset 0 0 15px rgba(122, 0, 46, 0.1);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .loader-container.hidden {
@@ -380,25 +387,30 @@ header {
 .services-carousel-section {
     padding: 2rem 0;
     width: 100%;
-    overflow: hidden;
+    max-width: 1200px;
+    overflow: visible;
     background: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0 auto;
+    position: relative;
 }
 
 .services-carousel-container {
     width: 100%;
-    padding: 0 0.5rem;
+    padding: 0;
     max-width: 100%;
     margin: 0 auto;
-    display: block; 
+    display: block;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
 }
 
 .services-carousel {
     display: flex;
-    gap: 1rem;
+    gap: 0;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
@@ -407,11 +419,19 @@ header {
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding: 0.5rem 0;
-    padding-left: 7.5%;
+    padding-left: 0;
     cursor: grab;
     user-select: none;
     width: 100%; 
     min-width: 0;
+    justify-content: flex-start;
+}
+
+.carousel-spacer {
+    flex: 0 0 0;
+    min-width: 0;
+    scroll-snap-align: none;
+    display: none;
 }
 
 .services-carousel:active {
@@ -423,13 +443,16 @@ header {
 }
 
 .service-card {
-    flex: 0 0 85%;
-    scroll-snap-align: start;
+    flex: 0 0 100%;
+    scroll-snap-align: center;
     cursor: pointer;
     transition: transform 0.3s ease;
     user-select: none;
     -webkit-user-drag: none;
+    margin: 0;
+    position: relative;
     border-radius: 14px;
+    box-sizing: border-box;
 }
 
 .service-card.fade-in-element.visible {
@@ -489,6 +512,115 @@ header {
     color: rgba(255, 255, 255, 0.9);
     font-weight: 300;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Botões de Navegação do Carrossel */
+.carousel-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    background: #7A002E;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 900;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(84, 0, 31, 0.3), 
+                0 2px 8px rgba(84, 0, 31, 0.2);
+    opacity: 0.9;
+    overflow: hidden;
+}
+
+.carousel-nav-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 70%
+    );
+    animation: shineElegant 3s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.carousel-nav-btn:hover::after {
+    opacity: 1;
+    animation: shineElegant 2s ease-in-out infinite;
+}
+
+.carousel-nav-btn:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+    background: linear-gradient(135deg, #8A0038 0%, #7A002E 100%);
+    box-shadow: 0 6px 20px rgba(84, 0, 31, 0.4), 
+                0 4px 12px rgba(84, 0, 31, 0.3),
+                0 0 20px rgba(212, 175, 55, 0.2);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.carousel-nav-btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.carousel-nav-btn svg {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.carousel-nav-btn:hover svg {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
+}
+
+.carousel-nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: translateY(-50%);
+}
+
+.carousel-nav-btn:disabled:hover {
+    transform: translateY(-50%);
+    box-shadow: 0 4px 15px rgba(84, 0, 31, 0.3), 
+                0 2px 8px rgba(84, 0, 31, 0.2);
+}
+
+.carousel-nav-prev {
+    left: -50px;
+}
+
+.carousel-nav-next {
+    right: -25px;
+}
+
+@media (min-width: 768px) {
+    .carousel-nav-prev {
+        left: -65px;
+    }
+    
+    .carousel-nav-next {
+        right: -30px;
+    }
+    
+    .carousel-nav-btn {
+        display: flex;
+    }
 }
 
 /* Container de Ícones Sociais */
@@ -1171,7 +1303,7 @@ footer {
     }
     
     .service-card {
-        flex: 0 0 85%;
+        flex: 0 0 100%;
     }
     
     .service-card-image {
@@ -1283,7 +1415,7 @@ footer {
     }
     
     .service-card {
-        flex: 0 0 85%;
+        flex: 0 0 96%;
         min-width: 0;
     }
     
@@ -1338,13 +1470,108 @@ footer {
 
 /* Ajuste para Tablets e PC */
 @media (min-width: 768px) {
-    .service-card {
-        flex: 0 0 30%; 
-        min-width: 300px;
+    .services-carousel-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0;
+        position: relative;
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .services-carousel {
-        justify-content: center; 
+        justify-content: flex-start; 
         padding-left: 0;
+        padding-right: 0;
+        gap: 1.5rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-padding-left: 0;
+    }
+    
+    .service-card {
+        flex: 0 0 calc(33.333% - 1rem); 
+        min-width: 300px;
+        max-width: 350px;
+        scroll-snap-align: center;
+    }
+    
+    /* Estilização específica para cada card */
+    .service-card-1 {
+        margin-left: 0;
+        scroll-margin-left: 0;
+        scroll-snap-align: start;
+    }
+    
+    .service-card-2 {
+        flex: 0 0 calc(33.333% - 1rem);
+        scroll-snap-align: start;
+    }
+    
+    .service-card-3 {
+        flex: 0 0 calc(33.333% - 1rem);
+        scroll-snap-align: start;
+    }
+    
+    .service-card-4 {
+        flex: 0 0 calc(33.333% - 1rem);
+        scroll-snap-align: start;
+        margin-right: 2rem;
+    }
+    
+    /* Estilização individual para cada card image */
+    .service-card-image-1 {
+        background-position: center;
+        background-size: cover;
+    }
+    
+    .service-card-image-2 {
+        background-position: center;
+        background-size: cover;
+    }
+    
+    .service-card-image-3 {
+        background-position: center;
+        background-size: cover;
+    }
+    
+    .service-card-image-4 {
+        background-position: center;
+        background-size: cover;
+    }
+    
+    /* Overlay individual para cada card */
+    .service-card-overlay-1 {
+        background: linear-gradient(to top, rgba(84, 0, 31, 0.85) 0%, rgba(122, 0, 46, 0.4) 50%, transparent 100%);
+    }
+    
+    .service-card-overlay-2 {
+        background: linear-gradient(to top, rgba(84, 0, 31, 0.85) 0%, rgba(122, 0, 46, 0.4) 50%, transparent 100%);
+    }
+    
+    .service-card-overlay-3 {
+        background: linear-gradient(to top, rgba(84, 0, 31, 0.85) 0%, rgba(122, 0, 46, 0.4) 50%, transparent 100%);
+    }
+    
+    .service-card-overlay-4 {
+        background: linear-gradient(to top, rgba(84, 0, 31, 0.85) 0%, rgba(122, 0, 46, 0.4) 50%, transparent 100%);
+    }
+    
+    /* Conteúdo individual para cada card */
+    .service-card-content-1,
+    .service-card-content-2,
+    .service-card-content-3,
+    .service-card-content-4 {
+        padding: 1.5rem;
+    }
+    
+    /* Hover effects individuais */
+    .service-card-1:hover,
+    .service-card-2:hover,
+    .service-card-3:hover,
+    .service-card-4:hover {
+        transform: translateY(-5px);
+        transition: transform 0.3s ease;
     }
 }

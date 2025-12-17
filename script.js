@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Se não houver carrossel na página, encerra a função
     if (!carousel) return;
 
-    // >>> CORREÇÃO PRINCIPAL: Forçar o início no zero <<<
-    carousel.scrollLeft = 0;
+    // >>> CORREÇÃO PRINCIPAL: Scroll para o primeiro card <<<
+    // Inicialização será feita após timeout para garantir que os elementos estejam renderizados
 
     let currentIndex = 0;
     const cards = carousel.querySelectorAll('.service-card');
@@ -64,6 +64,22 @@ document.addEventListener('DOMContentLoaded', function() {
     let scrollLeft = 0;
     let startScrollLeft = 0;
     
+    // Função para atualizar estado dos botões
+    function updateNavButtons() {
+        const prevBtn = document.getElementById('carouselPrev');
+        const nextBtn = document.getElementById('carouselNext');
+        
+        if (prevBtn) {
+            // Desabilita se estiver no início ou próximo do início
+            prevBtn.disabled = carousel.scrollLeft <= 5;
+        }
+        if (nextBtn) {
+            // Desabilita se estiver no final ou próximo do final
+            const maxScroll = carousel.scrollWidth - carousel.offsetWidth;
+            nextBtn.disabled = carousel.scrollLeft >= maxScroll - 5;
+        }
+    }
+    
     // Função para mover o scroll até um card específico
     function scrollToCard(index) {
         if (isScrolling || isDragging) return;
@@ -72,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!cards[index]) return;
 
         isScrolling = true;
+        currentIndex = index;
         
         const card = cards[index];
         const cardWidth = card.offsetWidth;
@@ -86,6 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         setTimeout(() => {
             isScrolling = false;
+            updateNavButtons();
         }, 500);
     }
     
@@ -93,6 +111,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function nextCard() {
         if (isDragging) return;
         currentIndex = (currentIndex + 1) % totalCards;
+        scrollToCard(currentIndex);
+    }
+    
+    // Função para ir ao card anterior
+    function prevCard() {
+        if (isDragging) return;
+        currentIndex = (currentIndex - 1 + totalCards) % totalCards;
         scrollToCard(currentIndex);
     }
     
@@ -178,6 +203,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Botões de navegação
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+    
+    // Event listeners para os botões
+    if (prevBtn) {
+        prevBtn.addEventListener('click', function() {
+            prevCard();
+            resetAutoScroll();
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', function() {
+            nextCard();
+            resetAutoScroll();
+        });
+    }
+    
     // Detectar scroll manual para atualizar o índice atual
     let scrollTimeout;
     carousel.addEventListener('scroll', function() {
@@ -200,12 +244,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             currentIndex = closestIndex;
+            updateNavButtons();
         }, 100);
+        
+        // Atualizar botões durante o scroll também
+        updateNavButtons();
     });
     
     // Inicialização final do carrossel
     setTimeout(() => {
-        carousel.scrollLeft = 0; // Garante mais uma vez que começa do início
+        // Scroll para o primeiro card (ignorando espaçadores)
+        if (cards[0]) {
+            const firstCard = cards[0];
+            carousel.scrollLeft = firstCard.offsetLeft;
+        } else {
+            carousel.scrollLeft = 0;
+        }
+        currentIndex = 0;
+        updateNavButtons();
         startAutoScroll();
     }, 1000);
 });
